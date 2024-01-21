@@ -436,6 +436,11 @@ const pages: MuiPage[] = [
             title: 'Sparkline',
           },
           {
+            pathname: '/x/react-charts/spider',
+            title: 'Spider',
+            newFeature: true,
+          },
+          {
             pathname: '/x/api/charts-group',
             title: 'API Reference',
             children: [...chartsComponentApi],
