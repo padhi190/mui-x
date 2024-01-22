@@ -5,6 +5,7 @@ import { PieSeriesType, DefaultizedPieSeriesType, PieItemIdentifier, PieValueTyp
 import { AxisConfig } from '../axis';
 import { DefaultizedProps, MakeOptional } from '../helpers';
 import { StackingGroupsType } from '../../internals/stackSeries';
+import { DefaultizedSpiderSeriesType, SpiderItemIdentifier, SpiderSeriesType } from './spider';
 
 interface ChartsSeriesConfig {
   bar: {
@@ -31,10 +32,17 @@ interface ChartsSeriesConfig {
     series: DefaultizedPieSeriesType;
     itemIdentifier: PieItemIdentifier;
   };
+  spider: {
+    seriesInput: Omit<DefaultizedProps<SpiderSeriesType, 'id'>, 'data'> & {
+      data: number[];
+    };
+    series: DefaultizedSpiderSeriesType;
+    itemIdentifier: SpiderItemIdentifier;
+  }
 }
 
 export type CartesianChartSeriesType = 'bar' | 'line' | 'scatter';
-export type ChartSeriesType = 'bar' | 'line' | 'scatter' | 'pie';
+export type ChartSeriesType = 'bar' | 'line' | 'scatter' | 'pie' | 'spider';
 
 export type ChartSeries<T extends ChartSeriesType> = ChartsSeriesConfig[T] extends {
   canBeStacked: true;

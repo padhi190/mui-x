@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { line as d3Line } from 'd3-shape';
+import { line as d3Line, stack } from 'd3-shape';
 import { SeriesContext } from '../context/SeriesContextProvider';
 import { CartesianContext } from '../context/CartesianContextProvider';
 import { LineElement, LineElementProps } from './LineElement';

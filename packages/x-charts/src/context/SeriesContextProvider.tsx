@@ -4,6 +4,7 @@ import barSeriesFormatter from '../BarChart/formatter';
 import scatterSeriesFormatter from '../ScatterChart/formatter';
 import lineSeriesFormatter from '../LineChart/formatter';
 import pieSeriesFormatter from '../PieChart/formatter';
+import spiderSeriesFormatter from '../SpiderChart/formatter';
 import { AllSeriesType } from '../models/seriesType';
 import { defaultizeColor } from '../internals/defaultizeColor';
 import {
@@ -41,6 +42,7 @@ const seriesTypeFormatter: {
   scatter: scatterSeriesFormatter,
   line: lineSeriesFormatter,
   pie: pieSeriesFormatter,
+  spider: spiderSeriesFormatter,
 };
 
 /**
