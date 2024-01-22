@@ -1,56 +1,38 @@
 import * as React from 'react';
 import { SpiderChart as Spider } from '@mui/x-charts/SpiderChart';
 
-/*
-const categories = ['battery', 'contract', 'design'];
-
-const iphone = [0.22, 0.3, 0.5];
-const samsung= [0.22, 0.3, 0.5];
-const nokia= [0.22, 0.3, 0.5];
-
-const valueFormatter = (value: number | null) => `${value * 100}%`;
-
-<SpiderChart
-  xAxis = {[{
-    id: 'Category',
-    data: categories,
-    scaleType: '',
-    valueFormatter,
-  }]}
-  series = {[
-    {id: 'iphone', label: 'iPhone', data: iphone}
-    {id: 'samsung', label: 'Samsung', data: samsung}
-    {id: 'nokia', label: 'Nokia', data: nokia}
-  ]}
-  width={500}
-  height={300}
-/>
-*/
-
-const categories = ['battery', 'contract', 'design', 'build', 'screen', 'color'];
-
-const iphone = [2, 5.5, 2, 8.5, 1.5, 5]
-const samsung = [3, 3.5, 7, 4.5, 2.5, 2]
-const nokia = [5, 1.5, 9, 1.5, 5.5, 6]
-
+const data = [
+  [
+    { key: 'Battery', value: 22 },
+    { key: 'Brand', value: 28 },
+    { key: 'Contract', value: 29 },
+    { key: 'Design', value: 17 },
+    { key: 'Screen', value: 22 },
+    { key: 'Price', value: 21 },
+  ],
+  [
+    { key: 'Battery', value: 27 },
+    { key: 'Brand', value: 16 },
+    { key: 'Contract', value: 25 },
+    { key: 'Design', value: 13 },
+    { key: 'Screen', value: 13},
+    { key: 'Price', value: 25},
+  ],
+  [
+    { key: 'Battery', value: 26 },
+    { key: 'Brand', value: 10 },
+    { key: 'Contract', value: 30 },
+    { key: 'Design', value: 24 },
+    { key: 'Screen', value: 29},
+    { key: 'Price', value: 15},
+  ],
+];
 export default function SpiderChartDemo() {
   return (
     <Spider
-      xAxis={[{scaleType: 'band' ,data: categories }]}
-      series={[
-        {
-          id: 'iphone',
-          data: iphone,
-        },{
-          id: 'samsung',
-          data: samsung,
-        },{
-          id: 'nokia',
-          data: nokia,
-        },
-      ]}
-      width={500}
-      height={300}
+      series={data}
+      width={400}
+      height={400}
     />
   );
 }

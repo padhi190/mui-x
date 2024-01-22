@@ -1,63 +1,35 @@
 import React from 'react';
 import * as d3 from 'd3';
+import SpiderPlot, { SpiderPlotProps, SpiderValue } from './SpiderPlot';
+import SpiderTicks from './SpiderTicks';
+import SpiderLabels from './SpiderLabels';
+import SpiderContainer, { Dimension, Margin } from './SpiderContainer';
 
-type SpiderValue = { key: string, value: number };
+interface SpiderChartProps extends Dimension, Margin, Omit<SpiderPlotProps, 'lineGenerator'> {}
 
-type Dimension = {
-  width: number  
-  height: number
-}
+const COLORS: SpiderChartProps['colors'] = ['#137B80', '#E6842A', '#91d247'];
 
+const DEFAULT_MARGIN = { top: 50, right: 60, bottom: 50, left: 60 };
 
-const initialData: SpiderValue[][] = [
-  [
-    { key: 'resilience', value: 17 },
-    { key: 'strength', value: 6 },
-    { key: 'adaptability', value: 20 },
-    { key: 'creativity', value: 12 },
-    { key: 'openness', value: 1 },
-    { key: 'confidence', value: 11 },
-  ],
-  [
-    { key: 'resilience', value: 7 },
-    { key: 'strength', value: 18 },
-    { key: 'adaptability', value: 6 },
-    { key: 'creativity', value: 14 },
-    { key: 'openness', value: 17 },
-    { key: 'confidence', value: 14 },
-  ],
-];
-
-export const SpiderChart = ({ data = initialData }) => {
-  const dimensions = {
-    width: 600,
-    height: 600,
-    margin: { top: 50, right: 60, bottom: 50, left: 60 },
-  };
-  const { width, height, margin } = dimensions;
-
+export const SpiderChart = ({
+  series,
+  width,
+  height,
+  colors = COLORS,
+  margin = DEFAULT_MARGIN,
+}: SpiderChartProps) => {
   const boundedDimensions: Dimension = {
-    width: dimensions.width - margin.left - margin.right,
-    height: dimensions.height - margin.top - margin.bottom,
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
   };
-  const radius = boundedDimensions.width / 2;
-
-  const angleScaleDomainLabels = data[0].map((d) => d.key);
+  const radius = Math.min(boundedDimensions.width, boundedDimensions.height) / 2;
 
   const angleScale = d3
     .scaleLinear()
-    .domain([0, data[0].length])
+    .domain([0, series[0].length])
     .range([0, 2 * Math.PI]);
 
-  const getCoordinatesForAngle = (angle: number, offset = 1) => {
-    return [
-      radius * Math.cos(angle - Math.PI / 2) * offset,
-      radius * Math.sin(angle - Math.PI / 2) * offset,
-    ];
-  };
-
-  let allVals: number[] = [];
-  data.map((array) => array.map((d) => allVals.push(d.value)));
+  const allVals = getAllValues(series);
 
   const radiusScale = d3
     .scaleLinear()
@@ -65,76 +37,38 @@ export const SpiderChart = ({ data = initialData }) => {
     .range([0, radius])
     .nice();
 
-  const valueTicks = radiusScale.ticks(4);
-
-  const radarLineGenerator = d3
-    .lineRadial()
-    .angle((d, i) => angleScale(i))
+  const lineGenerator = d3
+    .lineRadial<SpiderValue>()
+    .angle((_d, i) => angleScale(i))
     .radius((d) => radiusScale(d.value))
     .curve(d3.curveLinearClosed);
 
   return (
-    <div>
-      <svg
-        width={width}
-        height={height}
-        style={{ backgroundColor: '#fff', overflow: 'visible' }}
-      >
-        <g
-          transform={`translate(${margin.left + radius} ,${
-            margin.top + radius
-          } )`}
-        >
-          {angleScaleDomainLabels.map((label, i) => {
-            const angle = angleScale(i);
-            const [x, y] = getCoordinatesForAngle(angle);
-            const [labelX, labelY] = getCoordinatesForAngle(angle, 1.1);
-            return (
-              <g key={i} className="grid">
-                <line x2={x} y2={y} stroke="#E5E2E0" className="grid-line" />
-                <text
-                  x={labelX}
-                  y={labelY}
-                  textAnchor={
-                    labelX < 0 ? 'end' : labelX < 3 ? 'middle' : 'start'
-                  }
-                >
-                  {label}
-                </text>
-              </g>
-            );
-          })}
+    <SpiderContainer width={width} height={height} margin={margin}>
+      <SpiderLabels
+        labels={series[0].map((d) => d.key)}
+        angleScale={angleScale}
+        getCoordinatesForAngle={(angle: number, offset?: number) =>
+          radianToCartesian(angle, radius, offset)
+        }
+      />
 
-          {valueTicks.map((tick, i) => (
-            <g key={i} className="grid">
-              <circle
-                // style={{ filter: 'url(#dropshadow)' }}
-                r={radiusScale(tick)}
-                fill="#fff"
-                // fill="#E5E2E0"
-                stroke="#E5E2E0"
-                fillOpacity={0.9}
-              />
-              <text x={5} y={-radiusScale(tick)} dy=".3em">
-                {tick}
-              </text>
-            </g>
-          ))}
+      <SpiderTicks radiusScale={radiusScale} />
 
-          {data.map((d, i) => (
-            <g key={i}>
-              <path 
-                d={radarLineGenerator(d)} 
-                fill="#137B80"
-                stroke="#137B80"
-                strokeWidth="2.5"
-                fillOpacity="0.1"
-              />
-            </g>
-          ))}
-        </g>
-        {/* End of bounded g */}
-      </svg>
-    </div>
+      <SpiderPlot series={series} colors={colors} lineGenerator={lineGenerator} />
+    </SpiderContainer>
   );
 };
+
+function radianToCartesian(angle: number, radius: number, offset = 1): [number, number] {
+  return [
+    radius * Math.cos(angle - Math.PI / 2) * offset,
+    radius * Math.sin(angle - Math.PI / 2) * offset,
+  ];
+}
+
+function getAllValues(series: SpiderValue[][]) {
+  const allVals: number[] = [];
+  series.map((array) => array.map((d) => allVals.push(d.value)));
+  return allVals;
+}
