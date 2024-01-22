@@ -6,7 +6,7 @@ interface SpiderTicksProps {
 }
 
 const SpiderTicks = ({ radiusScale, color = '#E5E2E0' }: SpiderTicksProps) => {
-  const valueTicks: number[] = radiusScale.ticks(4);
+  const valueTicks = radiusScale.ticks(4);
   return (
     <>
       {valueTicks.map((tick, i) => (

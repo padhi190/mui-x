@@ -4,18 +4,14 @@ title: React Spider chart
 
 # Charts - Spider 🚧
 
-<p class="description">Radar allows to compare multivariate data in a 2D chart.</p>
+<p class="description">Spider chart allows to compare multivariate data in a 2D chart.</p>
 
-## Line customization
+## Simple Spider Charts
 
-You can fill the area below the sparkline curve with the `area` prop.
-To modify the curve interpolation, use the `curve` prop. Read the full documentation for curves in the [line charts page](/x/react-charts/lines/#interpolation).
+A spider chart, also known as a radar chart or web chart, is a graphical representation that displays multivariate data in a two-dimensional form. It consists of a series of axes radiating from a central point, with each axis representing a different variable. Data points are plotted along each axis, and a polygon is formed by connecting these points. This chart allows for easy comparison and identification of patterns or trends across multiple variables.
 
 {{"demo": "Spider.js"}}
 
 :::warning
-The Radar Chart component isn't available yet, but you can upvote [**this GitHub issue**](https://github.com/mui/mui-x/issues/7925) to see it arrive sooner.
-
-Don't hesitate to leave a comment there to influence what gets built.
-Especially if you already have a use case for this component, or if you're facing a pain point with your current solution.
+This component is not yet ready for production.
 :::
