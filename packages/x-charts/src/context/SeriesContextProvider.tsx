@@ -42,7 +42,7 @@ const seriesTypeFormatter: {
   scatter: scatterSeriesFormatter,
   line: lineSeriesFormatter,
   pie: pieSeriesFormatter,
-  spider: pieSeriesFormatter,
+  // spider: pieSeriesFormatter,
 };
 
 /**

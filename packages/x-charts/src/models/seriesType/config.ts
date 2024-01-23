@@ -42,7 +42,7 @@ interface ChartsSeriesConfig {
 }
 
 export type CartesianChartSeriesType = 'bar' | 'line' | 'scatter';
-export type ChartSeriesType = 'bar' | 'line' | 'scatter' | 'pie' | 'spider';
+export type ChartSeriesType = 'bar' | 'line' | 'scatter' | 'pie';
 
 export type ChartSeries<T extends ChartSeriesType> = ChartsSeriesConfig[T] extends {
   canBeStacked: true;
