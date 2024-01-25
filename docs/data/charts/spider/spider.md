@@ -14,4 +14,6 @@ A spider chart, also known as a radar chart or web chart, is a graphical represe
 
 :::warning
 This component is not yet ready for production.
+
+(Pitra Pamungkas)
 :::
